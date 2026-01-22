@@ -12,22 +12,22 @@ Follow these steps to deploy your platform with the backend on your Linux server
 - PM2 (`npm install -g pm2`)
 - Nginx
 
-### Option A: Database Migration (Preserves all data)
-1. **Export Local Data**:
-   ```bash
-   pg_dump -U postgres -d ps4_sweets > ps4_backup.sql
-   ```
-2. **Import to Server**:
-   ```bash
-   psql -U postgres -d shop_db < ps4_backup.sql
-   ```
+### Database Setup & Data Import (Straight from GitHub)
+The repository includes a complete data script with all 27 branches, categories, and products.
 
-### Option B: Fresh Seed (Best for initial setup)
-If you just want the branches and products I've already set up, you can simply run:
-```bash
-npm run prisma:seed
-```
-This will automatically populate all 27 branches and the product catalog on your server.
+1. **Setup Database**:
+   ```bash
+   sudo -u postgres psql
+   CREATE DATABASE shop_db;
+   \q
+   ```
+2. **Import Data**:
+   ```bash
+   # Run this from the PS4-Backend folder
+   npx prisma migrate dev --name init
+   npm run prisma:seed
+   ```
+   *This command installs all the outlet data and catalog items automatically.*
 
 ### Application Deployment
 1. Transfer the `backend-api` folder to your server.
